@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Habit Tracker - Soft Pastel Blue</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f7ff 0%, #e0f2fe 50%, #bae6fd 100%);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Custom Keyframe Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(186, 230, 253, 0.6); }
+            50% { box-shadow: 0 0 28px rgba(125, 211, 252, 0.9); }
+        }
+
+        @keyframes checkPop {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .glow-effect {
+            animation: pulseGlow 3.5s infinite;
+        }
+
+        .pop-check {
+            animation: checkPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(240, 247, 255, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #93c5fd;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #60a5fa;
+        }
+    </style>
+</head>
+<body class="text-slate-700 antialiased py-6 px-3 sm:px-6 lg:px-8">
+
+    <div class="max-w-3xl mx-auto space-y-6">
+        
+        <!-- Header Section -->
+        <header class="text-center animate-fade-in">
+            <div class="inline-flex items-center justify-center p-3.5 bg-white/80 text-sky-500 rounded-2xl mb-3 shadow-md glow-effect animate-float border border-sky-100">
+                <i class="fa-solid fa-sparkles text-2xl"></i>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-bold text-slate-800 tracking-tight">Daily Habit Tracker</h1>
+            <p class="text-sm sm:text-base text-slate-500 mt-1.5 font-medium">Langkah kecil setiap hari menuju kebiasaan besar!</p>
+        </header>
+
+        <!-- Motivational Quote Banner -->
+        <div class="bg-white/80 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-sky-100 shadow-sm text-center animate-fade-in relative overflow-hidden">
+            <div class="absolute -right-4 -bottom-4 opacity-10 text-sky-500 text-7xl pointer-events-none">
+                <i class="fa-solid fa-quote-right"></i>
+            </div>
+            <p id="quote-text" class="text-sm sm:text-base font-semibold text-sky-800 transition-all duration-300">
+                "Setiap tindakan kecil hari ini adalah investasi untuk dirimu esok hari."
+            </p>
+            <p id="quote-author" class="text-xs text-sky-500/80 mt-1 font-medium">— Semangat Harian</p>
+        </div>
+
+        <!-- Progress Dashboard Section -->
+        <div class="bg-white/90 backdrop-blur-md p-5 sm:p-6 rounded-3xl border border-sky-100 shadow-lg animate-fade-in">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800">Progress Hari Ini</h2>
+                    <p class="text-xs text-slate-400">Pantau pencapaian dan konsistensi Anda</p>
+                </div>
+                <div class="flex items-center gap-2 bg-sky-50 px-3.5 py-1.5 rounded-xl border border-sky-100 self-start sm:self-auto">
+                    <i class="fa-solid fa-bolt text-amber-500"></i>
+                    <span class="text-xs font-semibold text-slate-600">Perfect Streak:</span>
+                    <span id="stat-all-streak" class="text-sm font-bold text-sky-600">0 Hari</span>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="space-y-2">
+                <div class="flex justify-between items-center text-xs font-semibold">
+                    <span id="progress-status-text" class="text-slate-500">Mari mulai menyelesaikan habit!</span>
+                    <span id="progress-percent" class="text-sky-600 font-bold text-sm">0%</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-3.5 p-0.5 border border-slate-100">
+                    <div 
+                        id="progress-bar-fill" 
+                        class="bg-gradient-to-r from-sky-400 to-blue-400 h-2.5 rounded-full transition-all duration-500 ease-out shadow-sm"
+                        style="width: 0%"
+                    ></div>
+                </div>
+            </div>
+
+            <!-- Stats Mini Cards -->
+            <div class="grid grid-cols-3 gap-3 mt-5">
+                <div class="bg-sky-50/60 p-3 rounded-2xl border border-sky-100/60 text-center transition-all hover:scale-[1.02]">
+                    <div class="text-sky-500 text-sm mb-0.5"><i class="fa-solid fa-list-check"></i></div>
+                    <div id="stat-total" class="text-lg sm:text-xl font-bold text-slate-800">0</div>
+                    <div class="text-[11px] text-slate-400 font-medium">Total Habit</div>
+                </div>
+                <div class="bg-emerald-50/60 p-3 rounded-2xl border border-emerald-100/60 text-center transition-all hover:scale-[1.02]">
+                    <div class="text-emerald-500 text-sm mb-0.5"><i class="fa-solid fa-circle-check"></i></div>
+                    <div id="stat-completed" class="text-lg sm:text-xl font-bold text-slate-800">0</div>
+                    <div class="text-[11px] text-slate-400 font-medium">Selesai</div>
+                </div>
+                <div class="bg-amber-50/60 p-3 rounded-2xl border border-amber-100/60 text-center transition-all hover:scale-[1.02]">
+                    <div class="text-amber-500 text-sm mb-0.5"><i class="fa-solid fa-fire"></i></div>
+                    <div id="stat-max-streak" class="text-lg sm:text-xl font-bold text-slate-800">0</div>
+                    <div class="text-[11px] text-slate-400 font-medium">Best Habit Streak</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Tracker (7 Days Matrix) -->
+        <div class="bg-white/90 backdrop-blur-md p-5 sm:p-6 rounded-3xl border border-sky-100 shadow-md animate-fade-in">
+            <h2 class="text-base font-bold text-slate-800 mb-3 flex items-center gap-2">
+                <i class="fa-regular fa-calendar-check text-sky-500"></i> Pelacak Mingguan (7 Hari Terakhir)
+            </h2>
+            <div id="weekly-grid" class="grid grid-cols-7 gap-1.5 sm:gap-2">
+                <!-- Days will be inserted dynamically -->
+            </div>
+        </div>
+
+        <!-- Add Habit Form -->
+        <div class="bg-white/90 backdrop-blur-md p-5 rounded-3xl border border-sky-100 shadow-lg animate-fade-in">
+            <h2 class="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-plus-circle text-sky-500"></i> Tambah Kebiasaan Baru
+            </h2>
+            <form id="habit-form" class="flex flex-col sm:flex-row gap-3">
+                <input 
+                    type="text" 
+                    id="habit-input" 
+                    placeholder="Contoh: Olahraga 15 menit, Membaca buku..." 
+                    class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent text-sm bg-sky-50/20 transition-all"
+                    required
+                >
+                <select 
+                    id="habit-category" 
+                    class="px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-300 text-sm bg-sky-50/20 text-slate-600 transition-all cursor-pointer"
+                >
+                    <option value="Kesehatan">Kesehatan</option>
+                    <option value="Produktifitas">Produktifitas</option>
+                    <option value="Pengembangan Diri">Pengembangan Diri</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+                <button 
+                    type="submit" 
+                    class="bg-sky-400 hover:bg-sky-500 text-white font-medium px-5 py-2.5 rounded-xl transition-all shadow-md shadow-sky-200 hover:shadow-lg active:scale-95 text-sm flex items-center justify-center gap-2 shrink-0"
+                >
+                    <i class="fa-solid fa-plus"></i> Tambah
+                </button>
+            </form>
+        </div>
+
+        <!-- Habit List Section -->
+        <div class="space-y-3" id="habit-list">
+            <!-- Habit items inserted dynamically -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="text-center py-12 bg-white/60 backdrop-blur-sm rounded-3xl border border-dashed border-sky-200 hidden">
+            <div class="text-sky-300 text-5xl mb-3">
+                <i class="fa-regular fa-clipboard"></i>
+            </div>
+            <p class="text-slate-600 font-semibold text-base">Belum ada habit yang ditambahkan</p>
+            <p class="text-slate-400 text-xs mt-1">Mulai perjalanan menuju kebiasaan baru melalui form di atas.</p>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="text-center pt-2">
+            <button 
+                onclick="resetTodayData()" 
+                class="text-xs text-slate-400 hover:text-rose-500 transition-colors underline decoration-dotted underline-offset-4"
+            >
+                <i class="fa-solid fa-rotate-left mr-1"></i> Reset Checklist Hari Ini
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Custom Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-800 text-white px-4 py-3 rounded-2xl shadow-xl text-sm flex items-center gap-2.5 transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none z-50 border border-slate-700">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toast-message">Pesan Notifikasi</span>
+    </div>
+
+    <script>
+        // Quotes list based on completion levels
+        const QUOTES = {
+            low: [
+                { quote: "Awal yang kecil adalah permulaan dari perubahan besar.", author: "Anonim" },
+                { quote: "Jangan menunggu motivasi, buatlah kebiasaan.", author: "Jim Ryun" },
+                { quote: "Satu langkah kecil hari ini lebih baik dari seribu niat esok hari.", author: "Motivasi Harian" }
+            ],
+            medium: [
+                { quote: "Kamu sudah setengah jalan! Pertahankan konsistensimu.", author: "Semangat Harian" },
+                { quote: "Disiplin adalah memilih antara apa yang kamu inginkan sekarang dan apa yang paling kamu inginkan.", author: "Abraham Lincoln" },
+                { quote: "Konsistensi adalah kunci yang membuka pintu keberhasilan.", author: "Proverb" }
+            ],
+            full: [
+                { quote: "Luar biasa! Kamu berhasil menyelesaikan semua habit hari ini! 🎉", author: "Pencapaian Sempurna" },
+                { quote: "Keberhasilan adalah hasil dari usaha kecil yang diulangi hari demi hari.", author: "Robert Collier" },
+                { quote: "Kamu hari ini adalah versi terbaik dari dirimu kemarin!", author: "Self Improvement" }
+            ]
+        };
+
+        // State Management
+        let habits = JSON.parse(localStorage.getItem('pastel_habits_v2')) || [];
+
+        // Helper: Get today date string (YYYY-MM-DD)
+        function getTodayString(offsetDays = 0) {
+            const date = new Date();
+            date.setDate(date.getDate() - offsetDays);
+            return date.toISOString().split('T')[0];
+        }
+
+        // Save Data to LocalStorage
+        function saveHabits() {
+            localStorage.setItem('pastel_habits_v2', JSON.stringify(habits));
+            renderApp();
+        }
+
+        // Show Custom Toast
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMessage.textContent = message;
+            toastIcon.className = isSuccess 
+                ? "fa-solid fa-circle-check text-emerald-400 text-base" 
+                : "fa-solid fa-circle-info text-sky-400 text-base";
+
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
+
+        // Add Habit
+        document.getElementById('habit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const input = document.getElementById('habit-input');
+            const category = document.getElementById('habit-category');
+
+            if (!input.value.trim()) return;
+
+            const newHabit = {
+                id: Date.now(),
+                name: input.value.trim(),
+                category: category.value,
+                streak: 0,
+                history: {} // Format: { 'YYYY-MM-DD': true }
+            };
+
+            habits.push(newHabit);
+            input.value = '';
+            saveHabits();
+            showToast('Habit berhasil ditambahkan!');
+        });
+
+        // Toggle Habit Completion for Today
+        function toggleHabit(id) {
+            const today = getTodayString(0);
+            habits = habits.map(habit => {
+                if (habit.id === id) {
+                    if (!habit.history) habit.history = {};
+                    const isCompleted = !!habit.history[today];
+                    
+                    if (isCompleted) {
+                        delete habit.history[today];
+                        habit.streak = Math.max(0, habit.streak - 1);
+                    } else {
+                        habit.history[today] = true;
+                        habit.streak += 1;
+                        showToast('Hebat! Kebiasaan berhasil diselesaikan ✨');
+                    }
+                }
+                return habit;
+            });
+            saveHabits();
+        }
+
+        // Delete Habit
+        function deleteHabit(id) {
+            habits = habits.filter(habit => habit.id !== id);
+            saveHabits();
+            showToast('Habit berhasil dihapus.', false);
+        }
+
+        // Reset Today's Check
+        function resetTodayData() {
+            const today = getTodayString(0);
+            habits.forEach(habit => {
+                if (habit.history && habit.history[today]) {
+                    delete habit.history[today];
+                    habit.streak = Math.max(0, habit.streak - 1);
+                }
+            });
+            saveHabits();
+            showToast('Checklist hari ini direset.', false);
+        }
+
+        // Get Category Styles
+        function getCategoryStyle(category) {
+            switch(category) {
+                case 'Kesehatan': return 'bg-rose-50 text-rose-500 border-rose-100';
+                case 'Produktifitas': return 'bg-sky-50 text-sky-600 border-sky-100';
+                case 'Pengembangan Diri': return 'bg-indigo-50 text-indigo-600 border-indigo-100';
+                default: return 'bg-slate-50 text-slate-600 border-slate-100';
+            }
+        }
+
+        // Calculate Overall Perfect All-Habits Streak
+        function calculateOverallStreak() {
+            if (habits.length === 0) return 0;
+            let streak = 0;
+            let dayOffset = 0;
+
+            while (true) {
+                const dateStr = getTodayString(dayOffset);
+                const allCompletedOnDate = habits.every(h => h.history && h.history[dateStr]);
+
+                // Allow current day (dayOffset 0) to not break streak if not fully completed yet
+                if (!allCompletedOnDate) {
+                    if (dayOffset === 0) {
+                        dayOffset++;
+                        continue;
+                    } else {
+                        break;
+                    }
+                }
+
+                streak++;
+                dayOffset++;
+            }
+            return streak;
+        }
+
+        // Render Weekly Matrix (Past 7 Days)
+        function renderWeeklyMatrix() {
+            const weeklyGrid = document.getElementById('weekly-grid');
+            weeklyGrid.innerHTML = '';
+
+            const dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                const dayLabel = dayNames[date.getDay()];
+                const dayNum = date.getDate();
+
+                // Calculate completion percentage for this specific day
+                let completedCount = 0;
+                habits.forEach(h => {
+                    if (h.history && h.history[dateStr]) completedCount++;
+                });
+
+                const total = habits.length;
+                const ratio = total > 0 ? completedCount / total : 0;
+
+                let bgClass = 'bg-slate-100 border-slate-200 text-slate-400';
+                if (ratio === 1 && total > 0) {
+                    bgClass = 'bg-sky-400 border-sky-400 text-white shadow-sm';
+                } else if (ratio > 0) {
+                    bgClass = 'bg-sky-100 border-sky-200 text-sky-700';
+                }
+
+                const isToday = i === 0;
+
+                const dayBox = document.createElement('div');
+                dayBox.className = `flex flex-col items-center justify-center p-2 rounded-2xl border transition-all text-center ${bgClass} ${isToday ? 'ring-2 ring-sky-300 ring-offset-1 font-bold' : ''}`;
+                dayBox.innerHTML = `
+                    <span class="text-[10px] uppercase opacity-80">${isToday ? 'Hari ini' : dayLabel}</span>
+                    <span class="text-sm sm:text-base font-semibold mt-0.5">${dayNum}</span>
+                    <span class="text-[9px] mt-1 font-medium opacity-90">${completedCount}/${total}</span>
+                `;
+                weeklyGrid.appendChild(dayBox);
+            }
+        }
+
+        // Update Motivational Quote
+        function updateQuote(percentage) {
+            let quoteList = QUOTES.low;
+            if (percentage >= 100) quoteList = QUOTES.full;
+            else if (percentage >= 50) quoteList = QUOTES.medium;
+
+            const selected = quoteList[Math.floor(Math.random() * quoteList.length)];
+            document.getElementById('quote-text').textContent = `"${selected.quote}"`;
+            document.getElementById('quote-author').textContent = `— ${selected.author}`;
+        }
+
+        // Render Application
+        function renderApp() {
+            const habitList = document.getElementById('habit-list');
+            const emptyState = document.getElementById('empty-state');
+            const today = getTodayString(0);
+
+            habitList.innerHTML = '';
+
+            if (habits.length === 0) {
+                emptyState.classList.remove('hidden');
+                document.getElementById('stat-total').textContent = '0';
+                document.getElementById('stat-completed').textContent = '0';
+                document.getElementById('stat-max-streak').textContent = '0';
+                document.getElementById('stat-all-streak').textContent = '0 Hari';
+                document.getElementById('progress-bar-fill').style.width = '0%';
+                document.getElementById('progress-percent').textContent = '0%';
+                document.getElementById('progress-status-text').textContent = 'Tambahkan kebiasaan pertama Anda!';
+                renderWeeklyMatrix();
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            let completedTodayCount = 0;
+            let maxStreak = 0;
+
+            habits.forEach(habit => {
+                const isCompletedToday = !!(habit.history && habit.history[today]);
+                if (isCompletedToday) completedTodayCount++;
+                if (habit.streak > maxStreak) maxStreak = habit.streak;
+
+                const card = document.createElement('div');
+                card.className = `bg-white/90 backdrop-blur-md p-4 rounded-2xl border border-sky-100 shadow-sm flex items-center justify-between transition-all duration-300 hover:shadow-md animate-fade-in ${isCompletedToday ? 'bg-sky-50/40 border-sky-200' : ''}`;
+                
+                card.innerHTML = `
+                    <div class="flex items-center gap-3.5 flex-1 min-w-0">
+                        <button 
+                            onclick="toggleHabit(${habit.id})"
+                            class="w-7 h-7 rounded-xl border-2 flex items-center justify-center transition-all duration-200 shrink-0 ${isCompletedToday ? 'bg-sky-400 border-sky-400 text-white pop-check shadow-sm' : 'border-slate-300 hover:border-sky-400 bg-white'}"
+                        >
+                            ${isCompletedToday ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+                        </button>
+                        <div class="min-w-0 flex-1">
+                            <h3 class="text-sm sm:text-base font-semibold text-slate-800 truncate transition-all ${isCompletedToday ? 'line-through text-slate-400' : ''}">${escapeHtml(habit.name)}</h3>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-[10px] px-2.5 py-0.5 rounded-full border font-medium ${getCategoryStyle(habit.category)}">${habit.category}</span>
+                                <span class="text-[11px] text-amber-500 font-semibold flex items-center gap-1">
+                                    <i class="fa-solid fa-fire text-xs"></i> ${habit.streak} hari streak
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <button 
+                        onclick="deleteHabit(${habit.id})"
+                        class="text-slate-300 hover:text-rose-400 p-2 transition-colors ml-2 shrink-0 rounded-xl hover:bg-rose-50"
+                        title="Hapus Kebiasaan"
+                    >
+                        <i class="fa-regular fa-trash-can text-sm"></i>
+                    </button>
+                `;
+                habitList.appendChild(card);
+            });
+
+            // Update Progress Bar & Dashboard Stats
+            const total = habits.length;
+            const percentage = Math.round((completedTodayCount / total) * 100);
+
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-completed').textContent = completedTodayCount;
+            document.getElementById('stat-max-streak').textContent = maxStreak;
+            
+            const overallStreak = calculateOverallStreak();
+            document.getElementById('stat-all-streak').textContent = `${overallStreak} Hari`;
+
+            document.getElementById('progress-bar-fill').style.width = `${percentage}%`;
+            document.getElementById('progress-percent').textContent = `${percentage}%`;
+
+            // Progress status description
+            const statusText = document.getElementById('progress-status-text');
+            if (percentage === 100) {
+                statusText.textContent = "Sempurna! Semua habit hari ini tuntas 🎉";
+            } else if (percentage >= 50) {
+                statusText.textContent = "Progres luar biasa, teruskan!";
+            } else if (percentage > 0) {
+                statusText.textContent = "Permulaan yang bagus, ayo lanjutkan!";
+            } else {
+                statusText.textContent = "Belum ada habit yang diselesaikan hari ini.";
+            }
+
+            updateQuote(percentage);
+            renderWeeklyMatrix();
+        }
+
+        // Prevent XSS Utility
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // Initialize App
+        renderApp();
+    </script>
+</body>
+</html>
